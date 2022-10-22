@@ -1,3 +1,5 @@
+import copy
+
 def heuristic(board,player):
     heur = 0
     if player == "X":
@@ -473,10 +475,10 @@ def legal_moves(board,player):
                     if board[i+1][j+1] != "N":
                         flag = 1
                 if flag == 1:
-                    board_child = board
+                    board_child = copy.deepcopy(board)
                     board_child[i][j] = player
                     legal_moves.append(([i,j],heuristic(board_child,player)))
-    
+ 
     return legal_moves
 
 def minimax2ply():

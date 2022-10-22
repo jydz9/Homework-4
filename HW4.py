@@ -441,6 +441,44 @@ def heuristic(board,player):
 
     return heur
 
+def legal_moves(board,player):
+    legal_moves = []
+    
+    for j in range(0,6):
+        for i in range(0,5):
+            if board[i][j] == "N":
+                flag = 0
+                if i-1 >= 0 and j-1 >= 0:
+                    if board[i-1][j-1] != "N":
+                        flag = 1
+                if i-1 >= 0:
+                    if board[i-1][j] != "N":
+                        flag = 1
+                if i-1 >= 0 and j+1 <= 5:
+                    if board[i-1][j+1] != "N":
+                        flag = 1
+                if j-1 >= 0:
+                    if board[i][j-1] != "N":
+                        flag = 1
+                if j+1 <= 5:
+                    if board[i][j+1] != "N":
+                        flag = 1
+                if i+1 <= 4 and j-1 >= 0:
+                    if board[i+1][j-1] != "N":
+                        flag = 1
+                if i+1 <= 4:
+                    if board[i+1][j] != "N":
+                        flag = 1
+                if i+1 <= 4 and j+1 <= 5:
+                    if board[i+1][j+1] != "N":
+                        flag = 1
+                if flag == 1:
+                    board_child = board
+                    board_child[i][j] = player
+                    legal_moves.append(([i,j],heuristic(board_child,player)))
+    
+    return legal_moves
+
 def minimax2ply():
     None
 
@@ -475,3 +513,5 @@ if __name__ == "__main__":
         print()
 
     print(heuristic(board1,"X"))
+
+    print(legal_moves(board1,"X"))

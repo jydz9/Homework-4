@@ -1,7 +1,6 @@
 import copy
 import math
 import time
-from turtle import position
 
 def heuristic(board,player):
     heur = 0
@@ -553,6 +552,7 @@ def minimax2ply(board, player, depth, max_min_player):
     copyBoard = copy.deepcopy(board)
     terminal_found = find_terminalNodes(board,player)
     list_moves =  legal_moves(board,player)
+    # print(list_moves, "is the list")
     totalNodes = 0
     
     #Terminal node is when player X or O wins, or the board is full
@@ -568,17 +568,20 @@ def minimax2ply(board, player, depth, max_min_player):
     if max_min_player:
         score = -math.inf
         new_score = 0
-        maxNum = 0
+        maxNum = -1
         position = []
 
-        for moves in (list_moves):
-            print(moves[1])
-            if(moves[1] > maxNum):
-                maxNum = moves[1]
-                position = moves[0]
-                print(position)
-        newBoard = place_piece(copyBoard,player,position)
-        # Set to false to switch to min
+        for nodes in (list_moves):
+            newBoardTest = place_piece(copyBoard,player,nodes[0])
+            allMoves = legal_moves(newBoardTest,"O")
+            for moves in allMoves:
+                if(moves[1] > maxNum):
+                    maxNum = moves[1]
+                    position = moves[0]
+            totalNodes += len(allMoves)
+        
+        newBoard = place_piece(copyBoard,player,nodes[0])
+        # Set to false to switch to min player
         new_score = max(maxNum, minimax2ply(newBoard,player, depth-1, False))
         print(maxNum, " is the max", position)
         return new_score
@@ -587,15 +590,22 @@ def minimax2ply(board, player, depth, max_min_player):
     else:
         score = -math.inf
         new_score = 0
+        value = 0
         minNum = math.inf
         position = []
+        
 
-        for moves in (list_moves):
-            # print(moves[1])
-            if(moves[1] < minNum):
-                minNum = moves[1]
-                position = moves[0]
-                
+        for nodes in list_moves:
+            newBoardTest2 = place_piece(copyBoard,player,nodes[0])
+            allMoves = legal_moves(newBoardTest2,"X")
+            totalNodes += len(allMoves)
+            for moves in (allMoves):
+                if(moves[1] < minNum):
+                    minNum = moves[1]
+                    position = moves[0]
+            # print(allMoves)
+
+        print(totalNodes, "Is the total nodes")
         newBoard2 = place_piece(copyBoard,player,position)
         # Set to True to switch to max
         new_score = min(minNum, minimax2ply(newBoard2,player, depth-1, True))
@@ -605,7 +615,7 @@ def minimax4ply(board, player, depth, max_min_player):
     copyBoard = copy.deepcopy(board)
     terminal_found = find_terminalNodes(board,player)
     list_moves =  legal_moves(board,player)
-    totalNodes = 0
+    totalNodes = list_moves
     
     #Terminal node is when player X or O wins, or the board is full
     if depth == 0 or terminal_found:
@@ -615,18 +625,15 @@ def minimax4ply(board, player, depth, max_min_player):
         else:
             return heuristic(board, player)
 
-    if max_min_player:
+    if player == "X":
         score = -math.inf
         new_score = 0
         # For each move we can take
         maxNum = 0
         position = []
 
-        for moves in (list_moves):
-            print(moves[1])
-            if(moves[1] > maxNum):
-                maxNum = moves[1]
-                position = moves[0]
+        for nodes in list_moves:
+            pass
 
         newBoard = place_piece(copyBoard,player,position)
         # Set to false to switch to min
@@ -680,16 +687,16 @@ if __name__ == "__main__":
             print(c,end = " ")
         print()
 
-    print(heuristic(board1,"X"))
-
-    print(legal_moves(board1,"X"))
+    # print(heuristic(board1,"X"))
+    # print(heuristic(board,"X"))
+    # print(legal_moves(board1,"X"))
 
     winner = False
-    playerTurn = 'X'
+    playerTurn = 'O'
     start = time.time()
     findWinner = ""
     # testing
-    minimax2ply(board1,playerTurn,2,True)
+    value = minimax2ply(board,playerTurn,2,False)
     # while not winner:
     #     if(playerTurn == 'p2'):
     #       playerTurn = 'p1'

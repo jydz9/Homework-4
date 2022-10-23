@@ -481,6 +481,33 @@ def legal_moves(board,player):
  
     return legal_moves
 
+def checkForWin():
+    boardRow = 5
+    boardCol = 6
+    
+    #Subtract 3 from row, you can't start on row 3 to get 4 pieces in a row vertically
+    #This functions checks for vertical 4 in a row
+    for col in range(boardCol):
+        for row in range(boardRow-3):
+            if(map[row][col] == playerPiece and map[row + 1][col] == playerPiece and map[row + 2][col] == playerPiece and map[row + 3][col] == playerPiece):
+                return True
+     
+    #Checks for horizontal 4 in a row
+    for col in range(boardCol-3):
+        for row in range(boardRow):
+            if(map[row][col] == playerPiece and map[row][col + 1] == playerPiece and map[row][col + 2] == playerPiece and map[row][col + 3] == playerPiece):
+                return True
+    
+    #Diagonal has to have 4 pieces so you can't start on row 3 to 5 to get diagonal
+    #Check for diagonal 4 in a row for negative slope
+    for col in range(boardCol-3):
+        for row in range(boardRow-3):
+            if(map[row][col] == playerPiece and map[row + 1][col + 1] == playerPiece and map[row + 2][col + 2] == playerPiece and map[row + 3][col + 3] == playerPiece):
+                return True
+    
+    #Check diagonal for positive slope
+    
+      
 def minimax2ply():
     None
 

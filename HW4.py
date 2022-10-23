@@ -9,6 +9,55 @@ def heuristic(board,player):
         me = "O"
         opponent = "X"
 
+    #I win
+    #horizontal
+    for i in range(0,5):
+        for j in range(0,3):
+            if board[i][j] == board[i][j+1] == board[i][j+2] == board[i][j+3] == me:
+                return 1000
+
+    #vertical
+    for i in range(0,2):
+        for j in range(0,6):
+            if board[i][j] == board[i+1][j] == board[i+2][j] == board[i+3][j] == me:
+                return 1000
+
+    #diagonal
+    for i in range(0,2):
+        for j in range(0,3):
+            if board[i][j] == board[i+1][j+1] == board[i+2][j+2] == board[i+3][j+3] == me:
+                return 1000
+    
+    for i in range(3,5):
+        for j in range(0,3):
+            if board[i][j] == board[i-1][j+1] == board[i-2][j+2] == board[i-3][j+3] == me:
+                return 1000
+
+    #My opponent wins
+    #horizontal
+    for i in range(0,5):
+        for j in range(0,3):
+            if board[i][j] == board[i][j+1] == board[i][j+2] == board[i][j+3] == opponent:
+                return -1000
+
+    #vertical
+    for i in range(0,2):
+        for j in range(0,6):
+            if board[i][j] == board[i+1][j] == board[i+2][j] == board[i+3][j] == opponent:
+                return -1000
+
+    #diagonal
+    for i in range(0,2):
+        for j in range(0,3):
+            if board[i][j] == board[i+1][j+1] == board[i+2][j+2] == board[i+3][j+3] == opponent:
+                return -1000
+    
+    for i in range(3,5):
+        for j in range(0,3):
+            if board[i][j] == board[i-1][j+1] == board[i-2][j+2] == board[i-3][j+3] == opponent:
+                return -1000
+
+
     #two-side-open-3-in-a-row for me
     #horizontal
     for i in range(0,5):
@@ -481,33 +530,6 @@ def legal_moves(board,player):
  
     return legal_moves
 
-def checkForWin():
-    boardRow = 5
-    boardCol = 6
-    
-    #Subtract 3 from row, you can't start on row 3 to get 4 pieces in a row vertically
-    #This functions checks for vertical 4 in a row
-    for col in range(boardCol):
-        for row in range(boardRow-3):
-            if(map[row][col] == playerPiece and map[row + 1][col] == playerPiece and map[row + 2][col] == playerPiece and map[row + 3][col] == playerPiece):
-                return True
-     
-    #Checks for horizontal 4 in a row
-    for col in range(boardCol-3):
-        for row in range(boardRow):
-            if(map[row][col] == playerPiece and map[row][col + 1] == playerPiece and map[row][col + 2] == playerPiece and map[row][col + 3] == playerPiece):
-                return True
-    
-    #Diagonal has to have 4 pieces so you can't start on row 3 to 5 to get diagonal
-    #Check for diagonal 4 in a row for negative slope
-    for col in range(boardCol-3):
-        for row in range(boardRow-3):
-            if(map[row][col] == playerPiece and map[row + 1][col + 1] == playerPiece and map[row + 2][col + 2] == playerPiece and map[row + 3][col + 3] == playerPiece):
-                return True
-    
-    #Check diagonal for positive slope
-    
-      
 def minimax2ply():
     None
 
